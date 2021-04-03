@@ -60,10 +60,8 @@
     executable: /bin/bash
     warn: no
 
-- name: PostgreSQL | Start postgresql using pg_ctlcluster binary
-  shell: 
-    cmd: pg_ctlcluster {{ postgresql_version }} {{ postgresql_cluster_name }} restart
-    executable: /bin/bash
-  become: yes
-  become_user: "{{ postgresql_service_user }}"
+- name: PostgreSQL | Start postgresql
+  systemd:
+    name: postgresql@{{ postgresql_version }}-{{ postgresql_cluster_name }}
+    state: started
   when: postgresql_install.changed

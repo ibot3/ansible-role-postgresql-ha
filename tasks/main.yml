@@ -24,7 +24,7 @@
 
 - import_tasks: extensions/detect_repmgr_primary.yml
   when: postgresql_ext_install_repmgr and ansible_service_mgr == 'systemd'
-  tags: [postgresql, postgresql-extensions]
+  tags: [always]
 
 - import_tasks: fdw.yml
   tags: [postgresql, postgresql-fdw]

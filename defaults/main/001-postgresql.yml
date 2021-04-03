@@ -791,3 +791,9 @@ postgresql_apt_pin_priority: 500
 postgresql_apt_py3_dependencies: ["libpq-dev", "python3-psycopg2", "locales"]
 postgresql_apt_py2_dependencies: ["libpq-dev", "python-psycopg2", "python-pycurl", "locales"]
 postgresql_apt_dependencies: "{{ postgresql_apt_py3_dependencies if 'python3' in ansible_python_interpreter|default('') else postgresql_apt_py2_dependencies }}"
+
+# Service commands
+postgresql_service_start_command: systemctl start postgresql@{{ postgresql_version }}-{{ postgresql_cluster_name }}
+postgresql_service_stop_command: systemctl stop postgresql@{{ postgresql_version }}-{{ postgresql_cluster_name }}
+postgresql_service_restart_command: systemctl restart postgresql@{{ postgresql_version }}-{{ postgresql_cluster_name }}
+postgresql_service_reload_command: systemctl reload postgresql@{{ postgresql_version }}-{{ postgresql_cluster_name }}

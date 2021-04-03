@@ -1,10 +1,8 @@
 ---
 - name: PostgreSQL | Ensure PostgreSQL is running
-  shell: 
-    cmd: pg_ctlcluster {{ postgresql_version }} {{ postgresql_cluster_name }} status
-    executable: /bin/bash
-  become: yes
-  become_user: "{{ postgresql_service_user }}"
+  systemd:
+    name: postgresql@{{ postgresql_version }}-{{ postgresql_cluster_name }}
+    state: started
 
 - name: PostgreSQL | Make sure the PostgreSQL users are present
   postgresql_user:
