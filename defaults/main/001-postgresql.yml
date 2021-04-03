@@ -66,6 +66,7 @@ postgresql_database_schemas: []
 
 # List of user privileges to be applied (optional)
 postgresql_user_privileges: []
+postgresql_user_advanced_privileges: []
 
 # pg_hba.conf
 postgresql_pg_hba_default:
