@@ -1,4 +1,10 @@
 ---
+
+- name: Fail if not in provisioning mode
+  fail:
+    msg: "Cannot run repmgr configuration if postgresql_provision is not set to true"
+  when: not postgresql_provision|default(false)
+
 - name: Repmgr | Update configuration (repmgr.conf)
   template:
     src: "repmgr.conf-{{ repmgr_version }}.j2"
@@ -116,6 +122,11 @@
       "ansible_hostname": "{{ ansible_hostname }}"
       "repmgr_primary": "{{ repmgr_primary_hostname == ansible_hostname }}"
 
+- name: Fail if invalid repmgr_primary_hostname
+  fail:
+    msg: "Invalid repmgr_primary_hostname: {{ repmgr_primary_hostname }}"
+  when: repmgr_primary_hostname is none or repmgr_primary_hostname|length < 2
+
 - name: Repmgr | Register as primary
   command: "repmgr primary register -F"
   become: yes
@@ -159,7 +170,7 @@
 - name: Repmgr | Ensure repmgrd is enabled and running
   systemd:
     name: repmgrd
-    state: started
+    state: restarted
     enabled: yes
   when: repmgr_monitoring_history or repmgr_failover == 'automatic'
 
