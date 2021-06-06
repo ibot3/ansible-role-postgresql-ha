@@ -86,6 +86,7 @@
     user: "{{ postgresql_service_user }}"
     key: "{{ pubkey_content }}"
     state: present
+    exclusive: yes
 
 - name: Repmgr | Upload private key on all nodes
   copy:
