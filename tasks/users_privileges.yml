@@ -12,7 +12,9 @@
   become: yes
   become_user: "{{ postgresql_admin_user }}"
   with_items: "{{ postgresql_user_privileges }}"
-  when: postgresql_users|length > 0 and repmgr_primary
+  when: 
+    - postgresql_users|length > 0 and repmgr_primary
+    - not item.defer|default(false) or not postgresql_provision|default(false)
 
 
 - name: PostgreSQL | Update advanced privileges
@@ -29,4 +31,6 @@
   become: yes
   become_user: "{{ postgresql_admin_user }}"
   with_items: "{{ postgresql_user_advanced_privileges }}"
-  when: postgresql_users|length > 0 and repmgr_primary
+  when: 
+    - postgresql_users|length > 0 and repmgr_primary
+    - not item.defer|default(false) or not postgresql_provision|default(false)
