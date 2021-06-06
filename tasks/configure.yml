@@ -134,6 +134,13 @@
   notify: reload postgresql
   when: postgresql_configuration_pt1.changed or postgresql_configuration_pt2.changed or postgresql_configuration_pt3.changed or postgresql_systemd_custom_conf.changed
 
+- name: Fail if not in provisioning mode and restart needed
+  fail:
+    msg: "Cannot restart postgres server if postgresql_provision is not set to true"
+  when: 
+    - not postgresql_provision|default(false)
+    - postgresql_configuration_pt2.changed
+
 - name: PostgreSQL | Restart service
   command: /bin/true
   notify: restart postgresql
